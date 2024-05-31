@@ -24,5 +24,4 @@ $MLIR_OPT  -convert-scf-to-cf  $INPUT_FILE \
     | $MLIR_OPT -convert-func-to-llvm \
     | $MLIR_OPT -gpu-to-llvm \
     | $MLIR_OPT -reconcile-unrealized-casts \
-    | $MLIR_CPU_RUNNER --shared-libs=$SO_DEP1 --shared-libs=$SO_DEP2 --shared-libs=$SO_DEP3 --shared-libs=$SO_DEP4 --entry-point-result=void -O0 
-# | -o ./test.mlir
+    | $MLIR_CPU_RUNNER --shared-libs=$SO_DEP1 --shared-libs=$SO_DEP2 --shared-libs=$SO_DEP3 --shared-libs=$SO_DEP4 --entry-point-result=void -O0

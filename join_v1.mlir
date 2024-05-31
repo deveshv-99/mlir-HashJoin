@@ -51,7 +51,7 @@ module attributes {gpu.container_module} {
         %cidx_1 = arith.constant 1 : index
 
         // //-------------> Keep threads per block constant at 1024.. Need to change this?
-        %num_threads_per_block = arith.constant 1024 : index
+        %num_threads_per_block = arith.constant 256 : index
 
         %num_blocks = func.call @calc_num_blocks(%ht_size, %num_threads_per_block) : (index, index) -> index
 
@@ -78,7 +78,7 @@ module attributes {gpu.container_module} {
         gpu.memset %free_index, %ci32_0 : memref<1xi32>, i32
 
         // //-------------> Keep threads per block constant at 1024.. Need to change this?
-        %num_threads_per_block = arith.constant 1024 : index
+        %num_threads_per_block = arith.constant 256 : index
 
         %num_blocks = func.call @calc_num_blocks(%relation1_rows, %num_threads_per_block) : (index, index) -> index
 
@@ -102,7 +102,7 @@ module attributes {gpu.container_module} {
         %ci32_0 = arith.constant 0 : i32
         
         // //-------------> Keep threads per block constant at 1024.. Need to change this?
-        %num_threads_per_block = arith.constant 1024 : index
+        %num_threads_per_block = arith.constant 256 : index
 
         %num_blocks = func.call @calc_num_blocks(%relation2_rows, %num_threads_per_block) : (index, index) -> index
 
@@ -140,7 +140,7 @@ module attributes {gpu.container_module} {
         %ci32_0 = arith.constant 0 : i32
         
         // //-------------> Keep threads per block constant at 1024.. Need to change this?
-        %num_threads_per_block = arith.constant 1024 : index
+        %num_threads_per_block = arith.constant 256 : index
 
         %num_blocks = func.call @calc_num_blocks(%relation2_rows, %num_threads_per_block) : (index, index) -> index
 
@@ -198,8 +198,8 @@ module attributes {gpu.container_module} {
 
         func.func @hash(%key : i32) -> i32{
             // return modulo 100
-            %cidx_100 = arith.constant 100 : i32
-            %hash_val = arith.remui %key, %cidx_100 : i32
+            %cidx_10000 = arith.constant 10000 : i32
+            %hash_val = arith.remui %key, %cidx_10000 : i32
             return %hash_val : i32
         }
 
@@ -291,8 +291,8 @@ module attributes {gpu.container_module} {
 
         func.func @hash(%key : i32) -> i32{
             // return modulo 100
-            %cidx_100 = arith.constant 100 : i32
-            %hash_val = arith.remui %key, %cidx_100 : i32
+            %cidx_10000 = arith.constant 10000 : i32
+            %hash_val = arith.remui %key, %cidx_10000 : i32
             return %hash_val : i32
         }
 
@@ -469,8 +469,8 @@ module attributes {gpu.container_module} {
 
         func.func @hash(%key : i32) -> i32{
             // return modulo 100
-            %cidx_100 = arith.constant 100 : i32
-            %hash_val = arith.remui %key, %cidx_100 : i32
+            %cidx_10000 = arith.constant 10000 : i32
+            %hash_val = arith.remui %key, %cidx_10000 : i32
             return %hash_val : i32
         }
 
@@ -614,7 +614,7 @@ module attributes {gpu.container_module} {
         // %items_per_thread = arith.constant 1 : index
     
         // //-------------> Initialize hash table size as 1000 for now
-        %ht_size = arith.constant 1000 : index
+        %ht_size = arith.constant 10000 : index
 
         // Number of rows in the first table(build) is the num_tuples in the linked list
         // Allocate device memory for the hash table
