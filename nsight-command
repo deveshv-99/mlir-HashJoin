@@ -1,5 +1,3 @@
-/Data/devesh/trash/cuda_tests/nsight/target/linux-desktop-glibc_2_11_3-x64/ncu --config-file off --export /Data/devesh/mlir-HashJoin/nsight/abc --force-overwrite --section-folder /Data/devesh/trash/cuda_tests/nsight/sections /Data/devesh/llvm-project/build/bin/mlir-cpu-runner --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_cuda_runtime.so --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_runner_utils.so --shared-libs=/Data/devesh/l
+/Data/devesh/nsight/target/linux-desktop-glibc_2_11_3-x64/ncu --config-file off --export /Data/devesh/nsight/ncu-report --force-overwrite --section-folder /Data/devesh/nsight/sections /Data/devesh/llvm-project/build/bin/mlir-cpu-runner --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_cuda_runtime.so --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_runner_utils.so --shared-libs=/Data/devesh/l
 lvm-project/build/lib/libmlir_async_runtime.so  --shared-libs=/Data/devesh/mlir-HashJoin/shared_stuff/shared.so --entry-point-result=void -O0 /Data/devesh/mlir-H
 ashJoin/join_v1.ll
-
-/Data/devesh/mlir-HashJoin/nsight/target/linux-desktop-glibc_2_11_3-x64/ncu --config-file off --export /Data/devesh/mlir-HashJoin/nsight/ab --force-overwrite --section-folder /Data/devesh/mlir-HashJoin/nsight/sections /Data/devesh/trash/cuda_tests/a.out
