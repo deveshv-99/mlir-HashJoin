@@ -55,10 +55,14 @@ module attributes {gpu.container_module} {
 
         %num_blocks = func.call @calc_num_blocks(%ht_size, %num_threads_per_block) : (index, index) -> index
 
+        func.call @start_timer() : () -> ()
+
         gpu.launch_func @kernel_ht::@init_ht
         blocks in (%num_blocks, %cidx_1, %cidx_1)
         threads in (%num_threads_per_block, %cidx_1, %cidx_1)
         args(%ht_size : index, %ht_ptr : memref<?xi32>)
+
+        func.call @end_timer() : () -> ()
 
         return
     }
@@ -82,12 +86,15 @@ module attributes {gpu.container_module} {
 
         %num_blocks = func.call @calc_num_blocks(%relation1_rows, %num_threads_per_block) : (index, index) -> index
 
+        func.call @start_timer() : () -> ()
+
         gpu.launch_func @kernel_build::@build
         blocks in (%num_blocks, %cidx_1, %cidx_1) 
         threads in (%num_threads_per_block, %cidx_1, %cidx_1)
         args(%relation1 : memref<?xi32>, %relation1_rows : index, %ht_ptr : memref<?xi32>, %ll_key : memref<?xi32>,
             %ll_rowID : memref<?xindex>, %ll_next : memref<?xindex>, %free_index : memref<1xi32>)
 
+        func.call @end_timer() : () -> ()
         return
 
     }
@@ -113,7 +120,8 @@ module attributes {gpu.container_module} {
         %gblock_offset = gpu.alloc() : memref<1xi32>
         gpu.memcpy %gblock_offset, %h_gblock_offset : memref<1xi32>, memref<1xi32>
 
-        
+        func.call @start_timer() : () -> ()
+
         gpu.launch_func @kernel_count::@count 
         blocks in (%num_blocks, %cidx_1, %cidx_1) 
         threads in (%num_threads_per_block, %cidx_1, %cidx_1)
@@ -121,7 +129,11 @@ module attributes {gpu.container_module} {
             %ll_key : memref<?xi32>, %ll_rowID  : memref<?xindex>, %ll_next : memref<?xindex>,
             %prefix : memref<?xindex>, %gblock_offset : memref<1xi32>)
 
+        func.call @end_timer() : () -> ()
+        
         gpu.memcpy %h_gblock_offset, %gblock_offset : memref<1xi32>, memref<1xi32>
+
+        
 
         %block_offset = memref.load %h_gblock_offset[%cidx_0] : memref<1xi32>
         %block_offset_i32 = arith.index_cast %block_offset : i32 to index
@@ -144,14 +156,17 @@ module attributes {gpu.container_module} {
 
         %num_blocks = func.call @calc_num_blocks(%relation2_rows, %num_threads_per_block) : (index, index) -> index
 
+        func.call @start_timer() : () -> ()
 
         gpu.launch_func @kernel_probe::@probe
+
         blocks in (%num_blocks, %cidx_1, %cidx_1) 
         threads in (%num_threads_per_block, %cidx_1, %cidx_1)
         args(%relation2 : memref<?xi32>, %relation2_rows : index, %ht_ptr : memref<?xi32>,
             %ll_key : memref<?xi32>, %ll_rowID  : memref<?xindex>, %ll_next : memref<?xindex>,
             %prefix : memref<?xindex>, %d_result_r : memref<?xi32>, %d_result_s : memref<?xi32>)
 
+        func.call @end_timer() : () -> ()
         return
     }
     
@@ -705,4 +720,6 @@ module attributes {gpu.container_module} {
     func.func private @check(memref<?xi32>, memref<?xi32>, memref<?xi32>, memref<?xi32>) -> i32
     func.func private @printMemrefI32(memref<*xi32>)
     func.func private @printMemrefInd(memref<*xindex>)
+    func.func private @start_timer()
+    func.func private @end_timer()
 }

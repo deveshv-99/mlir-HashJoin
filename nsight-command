@@ -1,3 +1,15 @@
+# To generate the NCU report, run the following command:
 /Data/devesh/nsight/target/linux-desktop-glibc_2_11_3-x64/ncu --config-file off --export /Data/devesh/nsight/ncu-report --force-overwrite --section-folder /Data/devesh/nsight/sections /Data/devesh/llvm-project/build/bin/mlir-cpu-runner --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_cuda_runtime.so --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_runner_utils.so --shared-libs=/Data/devesh/l
 lvm-project/build/lib/libmlir_async_runtime.so  --shared-libs=/Data/devesh/mlir-HashJoin/shared_stuff/shared.so --entry-point-result=void -O0 /Data/devesh/mlir-H
 ashJoin/join_v1.ll
+
+# To import the NCU report, run the following command:
+ncu --import /Data/devesh/nsight/ncu-report.ncu-rep
+
+# To run ncu from command line, run the following command:
+sudo ncu /Data/devesh/llvm-project/build/bin/mlir-cpu-runner --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_cuda_runtime.so --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_runner_utils.so --shared-libs=/Data/devesh/l
+lvm-project/build/lib/libmlir_async_runtime.so  --shared-libs=/Data/devesh/mlir-HashJoin/shared_stuff/shared.so --entry-point-result=void -O0 /Data/devesh/mlir-H
+ashJoin/join_v1.ll
+
+# To print the summary: 
+sudo ncu --print-summary=per-kernel /Data/devesh/llvm-project/build/bin/mlir-cpu-runner --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_cuda_runtime.so --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_runner_utils.so --shared-libs=/Data/devesh/llvm-project/build/lib/libmlir_async_runtime.so  --shared-libs=/Data/devesh/mlir-HashJoin/shared_stuff/shared.so --entry-point-result=void -O0 /Data/devesh/mlir-HashJoin/join_v1.ll 

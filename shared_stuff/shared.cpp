@@ -3,6 +3,28 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <sys/time.h>
+#include <chrono>
+
+
+std::chrono::high_resolution_clock::time_point start;
+
+// Timer start
+extern "C" void start_timer(){
+    start = std::chrono::high_resolution_clock::now();
+}
+
+// Timer end
+extern "C" void end_timer(){
+    auto stop = std::chrono::high_resolution_clock::now();
+
+    static int x = 0;
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    std::cout << "For " <<x;
+    std::cout << ", time taken: " << duration.count() << " microseconds" << std::endl;
+    x++;
+}
+
 
 
 // Initialize index as the key to the memref
@@ -18,6 +40,8 @@ extern "C" void init_relation_index(int32_t* basePtr,int32_t* alignedPtr, int64_
 // Initialize random values to the memref
 extern "C" void init_relation(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
+    // set seed for random number generation
+    srand(0);
     //assign random integers to alignedPtr
     for(auto i = 0; i < sizes; i++){
         alignedPtr[i] = (int32_t)(rand()%1000);
