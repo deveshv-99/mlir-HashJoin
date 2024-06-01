@@ -24,8 +24,6 @@ extern "C" void end_timer(){
     x++;
 }
 
-
-
 // Initialize index as the key to the memref
 extern "C" void init_relation_index(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
@@ -34,7 +32,6 @@ extern "C" void init_relation_index(int32_t* basePtr,int32_t* alignedPtr, int64_
         alignedPtr[i] = (int32_t)i;
     }
 }
-
 
 // Initialize random values to the memref
 extern "C" void init_relation(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
@@ -47,8 +44,6 @@ extern "C" void init_relation(int32_t* basePtr,int32_t* alignedPtr, int64_t offs
         alignedPtr[i] = (int32_t)(rand()%1000);
     }
 }
-
-
 
 // Check for the correctness of the result
 extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffset, int64_t rSize, int64_t rStride, 
