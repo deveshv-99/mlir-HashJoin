@@ -41,7 +41,8 @@ extern "C" void init_relation_index(int32_t* basePtr,int32_t* alignedPtr, int64_
 extern "C" void init_relation(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
     // set seed for random number generation
-    srand(0);
+    // srand(time(0));
+    
     //assign random integers to alignedPtr
     for(auto i = 0; i < sizes; i++){
         alignedPtr[i] = (int32_t)(rand()%1000);
