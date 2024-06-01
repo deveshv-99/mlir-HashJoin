@@ -1,15 +1,20 @@
 #!/bin/bash
 
-MLIR_OPT=~/llvm-project/build/bin/mlir-opt
-MLIR_CPU_RUNNER=~/llvm-project/build/bin/mlir-cpu-runner
-SO_DEP1=~/llvm-project/build/lib/libmlir_cuda_runtime.so
-SO_DEP2=~/llvm-project/build/lib/libmlir_runner_utils.so
-SO_DEP3=~/llvm-project/build/lib/libmlir_async_runtime.so
-SO_DEP4=~/mlir-HashJoin/shared_stuff/shared.so
+# Get the path of the current bash script
+SCRIPT_PATH=$(dirname $(realpath -s $0))
 
-FileCheck=~/llvm-project/build/bin/FileCheck
+LLVM_BUILD_DIR=~/llvm-project/build
 
-#Input file is the first argument to the script
+MLIR_OPT=$LLVM_BUILD_DIR/bin/mlir-opt
+MLIR_CPU_RUNNER=$LLVM_BUILD_DIR/bin/mlir-cpu-runner
+SO_DEP1=$LLVM_BUILD_DIR/lib/libmlir_cuda_runtime.so
+SO_DEP2=$LLVM_BUILD_DIR/lib/libmlir_runner_utils.so
+SO_DEP3=$LLVM_BUILD_DIR/lib/libmlir_async_runtime.so
+SO_DEP4=$SCRIPT_PATH/shared_stuff/shared.so
+
+# FileCheck=~/llvm-project/build/bin/FileCheck
+
+# Input file is the first argument to the script
 INPUT_FILE=$1
 
 $MLIR_OPT  -convert-scf-to-cf  $INPUT_FILE \
