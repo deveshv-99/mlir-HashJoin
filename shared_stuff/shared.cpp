@@ -3,9 +3,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <sys/time.h>
 #include <chrono>
-
 
 std::chrono::high_resolution_clock::time_point start;
 
