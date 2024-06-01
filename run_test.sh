@@ -3,7 +3,8 @@
 # Get the path of the current bash script
 SCRIPT_PATH=$(dirname $(realpath -s $0))
 
-LLVM_BUILD_DIR=~/llvm-project/build
+# Set the LLVM build directory if not already set
+: "${LLVM_BUILD_DIR:==~/llvm-project/build}"
 
 MLIR_OPT=$LLVM_BUILD_DIR/bin/mlir-opt
 MLIR_CPU_RUNNER=$LLVM_BUILD_DIR/bin/mlir-cpu-runner

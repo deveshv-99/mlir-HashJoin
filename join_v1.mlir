@@ -693,13 +693,13 @@ module attributes {gpu.container_module} {
             // call @printMemrefI32(%dsts) : (memref<*xi32>) -> ()
 
 
-            // // Check the result of join
+            // Check the result of join
 
-            // %success = func.call @check(%relation1, %relation2, %h_result_r,%h_result_s)
-            // : (memref<?xi32>, memref<?xi32>, memref<?xi32>, memref<?xi32>) -> i32
+            %success = func.call @check(%relation1, %relation2, %h_result_r,%h_result_s)
+             : (memref<?xi32>, memref<?xi32>, memref<?xi32>, memref<?xi32>) -> i32
 
-            // // print success
-            // func.call @debugI32(%success) : (i32) -> ()
+            // print success
+            func.call @debugI32(%success) : (i32) -> ()
         
         }
         else{
