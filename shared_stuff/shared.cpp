@@ -9,12 +9,12 @@
 std::chrono::high_resolution_clock::time_point start;
 
 // Timer start
-extern "C" void start_timer(){
+extern "C" void startTimer(){
     start = std::chrono::high_resolution_clock::now();
 }
 
 // Timer end
-extern "C" void end_timer(){
+extern "C" void endTimer(){
     auto stop = std::chrono::high_resolution_clock::now();
 
     static int x = 0;
@@ -25,7 +25,7 @@ extern "C" void end_timer(){
 }
 
 // Initialize index as the key to the memref
-extern "C" void init_relation_index(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
+extern "C" void initRelationIndex(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
     //assign index values to alignedPtr
     for(auto i = 0; i < sizes; i++){
@@ -34,7 +34,7 @@ extern "C" void init_relation_index(int32_t* basePtr,int32_t* alignedPtr, int64_
 }
 
 // Initialize random values to the memref
-extern "C" void init_relation(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
+extern "C" void initRelation(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
     // set seed for random number generation
     // srand(time(0));
