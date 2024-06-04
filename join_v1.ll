@@ -9,10 +9,10 @@ module attributes {gpu.container_module, llvm.data_layout = ""} {
   llvm.mlir.global internal constant @kernelHashTable_gpubin_cst("\7FELF\02\01\013\07\00\00\00\00\00\00\00\02\00\BE\00{\00\00\00\00\00\00\00\00\00\00\00\00\0B\00\00\00\00\00\00\00\08\00\00\00\00\00\00V\05#\00@\008\00\03\00@\00\0C\00\01\00\00.shstrtab\00.strtab\00.symtab\00.symtab_shndx\00.nv.uft.entry\00.nv.info\00.text.initializeHT\00.nv.info.initializeHT\00.nv.shared.initializeHT\00.nv.constant0.initializeHT\00.rel.nv.constant0.initializeHT\00.debug_frame\00.rel.debug_frame\00.rela.debug_frame\00.nv.callgraph\00.nv.prototype\00.nv.rel.action\00\00.shstrtab\00.strtab\00.symtab\00.symtab_shndx\00.nv.uft.entry\00.nv.info\00initializeHT\00.text.initializeHT\00.nv.info.initializeHT\00.nv.shared.initializeHT\00.rel.nv.constant0.initializeHT\00.nv.constant0.initializeHT\00_param\00.debug_frame\00.rel.debug_frame\00.rela.debug_frame\00.nv.callgraph\00.nv.prototype\00.nv.rel.action\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00M\00\00\00\03\00\0B\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\AD\00\00\00\03\00\0A\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\CF\00\00\00\03\00\04\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\FF\00\00\00\03\00\07\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\1B\01\00\00\03\00\08\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\12\10\0B\00\00\00\00\00\00\00\00\00\80\01\00\00\00\00\00\00\FF\FF\FF\FF$\00\00\00\00\00\00\00\FF\FF\FF\FF\FF\FF\FF\FF\03\00\04|\FF\FF\FF\FF\0F\0C\81\80\80(\00\08\FF\81\80(\08\81\80\80(\00\00\00\FF\FF\FF\FF4\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\80\01\00\00\00\00\00\00\04\04\00\00\00\04\1C\00\00\00\0C\81\80\80(\00\04\14\00\00\00\00\00\00\00\00\00\00\04\11\08\00\06\00\00\00\00\00\00\00\04/\08\00\06\00\00\00\08\00\00\00\04\12\08\00\06\00\00\00\00\00\00\00\04\1C\08\00p\00\00\00\D0\00\00\00\03\1B\FF\00\04\17\0C\00\00\00\00\00\00\00\00\00\00\F0!\00\04\17\0C\00\00\00\00\00\01\00\08\00\00\F0!\00\04\17\0C\00\00\00\00\00\02\00\10\00\00\F0!\00\04\17\0C\00\00\00\00\00\03\00\18\00\00\F0!\00\04\17\0C\00\00\00\00\00\04\00 \00\00\F0!\00\04\17\0C\00\00\00\00\00\05\00(\00\00\F0!\00\03\190\00\04\0A\08\00\02\00\00\00`\010\00\015\00\00\047\04\00{\00\00\00\00\00\00\00\FF\FF\FF\FF\00\00\00\00\FE\FF\FF\FF\00\00\00\00\FD\FF\FF\FF\00\00\00\00\FC\FF\FF\FFs\00\00\00\00\00\00\00\00\00\00\11%\00\056D\00\00\00\00\00\00\00\02\00\00\00\06\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\02z\01\00\00\0A\00\00\00\0F\00\00\00\C4\0F\00\19y\02\00\00\00\00\00\00!\00\00\00(\0E\00\19y\05\00\00\00\00\00\00%\00\00\00b\0E\00\19x\03\FF\1F\00\00\00\02\14\01\00\00\CA\1F\00%z\02\05\00\00\00\00\02\02\8E\07\00\CA/\00\0Cz\00\02\00X\00\00p`\F0\03\00\C8\0F\00\0Cz\00\03\00Y\00\00\00a\F0\03\00\DA\0F\00M\09\00\00\00\00\00\00\00\00\80\03\00\EA\0F\00\11z\04\02\00\\\00\00\FF\10\80\07\00\E2\0F\00\B9z\04\00\00F\00\00\00\0A\00\00\00\C6\0F\00\11z\05\02\00]\00\00\03\14\0F\00\00\E2\0F\00$t\03\FF\FF\FF\FF\FF\FF\00\8E\07\00\CA\0F\00\86y\00\04\03\00\00\00\04\19\10\0C\00\E2\0F\00My\00\00\00\00\00\00\00\00\80\03\00\EA\0F\00Gy\00\00\F0\FF\FF\FF\FF\FF\83\03\00\C0\0F\00\18y\00\00\00\00\00\00\00\00\00\00\00\C0\0F\00\18y\00\00\00\00\00\00\00\00\00\00\00\C0\0F\00\18y\00\00\00\00\00\00\00\00\00\00\00\C0\0F\00\18y\00\00\00\00\00\00\00\00\00\00\00\C0\0F\00\18y\00\00\00\00\00\00\00\00\00\00\00\C0\0F\00\18y\00\00\00\00\00\00\00\00\00\00\00\C0\0F\00\18y\00\00\00\00\00\00\00\00\00\00\00\C0\0F\00\18y\00\00\00\00\00\00\00\00\00\00\00\C0\0F\00\18y\00\00\00\00\00\00\00\00\00\00\00\C0\0F\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\01\00\00\00\03\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\00\00\00\00\16\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\0B\00\00\00\03\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00V\01\00\00\00\00\00\00*\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\13\00\00\00\02\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\80\02\00\00\00\00\00\00\A8\00\00\00\00\00\00\00\02\00\00\00\06\00\00\00\08\00\00\00\00\00\00\00\18\00\00\00\00\00\00\00\BB\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00(\03\00\00\00\00\00\00p\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\01\00\00\00\00\00\00\00\00\00\00\00\00\00\00\007\00\00\00\00\00\00p\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\98\03\00\00\00\00\00\00$\00\00\00\00\00\00\00\05\00\00\00\00\00\00\00\04\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00S\00\00\00\00\00\00p\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\BC\03\00\00\00\00\00\00\8C\00\00\00\00\00\00\00\05\00\00\00\0B\00\00\00\04\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\EB\00\00\00\01\00\00p\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00H\04\00\00\00\00\00\00 \00\00\00\00\00\00\00\05\00\00\00\00\00\00\00\04\00\00\00\00\00\00\00\08\00\00\00\00\00\00\00\07\01\00\00\0B\00\00p\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00h\04\00\00\00\00\00\00\10\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\08\00\00\00\00\00\00\00\08\00\00\00\00\00\00\00\C8\00\00\00\09\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00x\04\00\00\00\00\00\00\10\00\00\00\00\00\00\00\05\00\00\00\04\00\00\00\08\00\00\00\00\00\00\00\10\00\00\00\00\00\00\00\81\00\00\00\01\00\00\00\02\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\88\04\00\00\00\00\00\00\90\01\00\00\00\00\00\00\00\00\00\00\0B\00\00\00\04\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00@\00\00\00\01\00\00\00\06\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\80\06\00\00\00\00\00\00\80\01\00\00\00\00\00\00\05\00\00\00\06\00\00\08\80\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\06\00\00\00\05\00\00\00\00\0B\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\A8\00\00\00\00\00\00\00\A8\00\00\00\00\00\00\00\08\00\00\00\00\00\00\00\01\00\00\00\05\00\00\00\88\04\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00x\03\00\00\00\00\00\00x\03\00\00\00\00\00\00\08\00\00\00\00\00\00\00\01\00\00\00\05\00\00\00\00\0B\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\00\A8\00\00\00\00\00\00\00\A8\00\00\00\00\00\00\00\08\00\00\00\00\00\00\00") {addr_space = 0 : i32}
   llvm.func @free(!llvm.ptr)
   llvm.func @malloc(i64) -> !llvm.ptr
-  llvm.mlir.global external constant @buildRelationRows(dense<100> : tensor<1xindex>) {addr_space = 0 : i32} : !llvm.array<1 x i64>
-  llvm.mlir.global external constant @probeRelationRows(dense<100> : tensor<1xindex>) {addr_space = 0 : i32} : !llvm.array<1 x i64>
-  llvm.mlir.global external constant @hashTableSize(dense<10000> : tensor<1xindex>) {addr_space = 0 : i32} : !llvm.array<1 x i64>
-  llvm.mlir.global external constant @numberOfThreadsPerBlock(dense<1024> : tensor<1xindex>) {addr_space = 0 : i32} : !llvm.array<1 x i64>
+  llvm.mlir.global external constant @buildRelationRows(dense<100000000> : tensor<1xindex>) {addr_space = 0 : i32} : !llvm.array<1 x i64>
+  llvm.mlir.global external constant @probeRelationRows(dense<100000000> : tensor<1xindex>) {addr_space = 0 : i32} : !llvm.array<1 x i64>
+  llvm.mlir.global external constant @hashTableSize(dense<10000000> : tensor<1xindex>) {addr_space = 0 : i32} : !llvm.array<1 x i64>
+  llvm.mlir.global external constant @numberOfThreadsPerBlock(dense<128> : tensor<1xindex>) {addr_space = 0 : i32} : !llvm.array<1 x i64>
   llvm.func @debugI32(%arg0: i32) {
     %0 = llvm.mlir.constant(1 : index) : i64
     %1 = llvm.mlir.null : !llvm.ptr
@@ -980,7 +980,7 @@ module attributes {gpu.container_module, llvm.data_layout = ""} {
     %61 = llvm.insertvalue %60, %59[2] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
     %62 = llvm.insertvalue %17, %61[3, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
     %63 = llvm.insertvalue %52, %62[4, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    llvm.call @initRelation(%56, %56, %60, %17, %52) : (!llvm.ptr, !llvm.ptr, i64, i64, i64) -> ()
+    llvm.call @initRelationR(%56, %56, %60, %17, %52) : (!llvm.ptr, !llvm.ptr, i64, i64, i64) -> ()
     %64 = llvm.mlir.constant(1 : index) : i64
     %65 = llvm.mlir.null : !llvm.ptr
     %66 = llvm.getelementptr %65[%34] : (!llvm.ptr, i64) -> !llvm.ptr, i32
@@ -993,7 +993,7 @@ module attributes {gpu.container_module, llvm.data_layout = ""} {
     %73 = llvm.insertvalue %72, %71[2] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
     %74 = llvm.insertvalue %34, %73[3, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
     %75 = llvm.insertvalue %64, %74[4, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    llvm.call @initRelation(%68, %68, %72, %34, %64) : (!llvm.ptr, !llvm.ptr, i64, i64, i64) -> ()
+    llvm.call @initRelationS(%68, %68, %72, %34, %64) : (!llvm.ptr, !llvm.ptr, i64, i64, i64) -> ()
     %76 = llvm.call @mgpuStreamCreate() : () -> !llvm.ptr
     %77 = llvm.mlir.constant(1 : index) : i64
     %78 = llvm.mlir.null : !llvm.ptr
@@ -1225,41 +1225,40 @@ module attributes {gpu.container_module, llvm.data_layout = ""} {
     llvm.call @mgpuMemcpy(%272, %208, %288, %280) : (!llvm.ptr, !llvm.ptr, i64, !llvm.ptr) -> ()
     llvm.call @mgpuStreamSynchronize(%280) : (!llvm.ptr) -> ()
     llvm.call @mgpuStreamDestroy(%280) : (!llvm.ptr) -> ()
-    %289 = llvm.call @check(%56, %56, %60, %17, %52, %68, %68, %72, %34, %64, %260, %260, %264, %188, %256, %272, %272, %276, %188, %268) : (!llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64) -> i32
-    llvm.call @debugI32(%289) : (i32) -> ()
     llvm.br ^bb3
   ^bb2:  // pred: ^bb0
-    %290 = llvm.mlir.constant(1 : index) : i64
-    %291 = llvm.mlir.null : !llvm.ptr
-    %292 = llvm.getelementptr %291[%188] : (!llvm.ptr, i64) -> !llvm.ptr, i32
-    %293 = llvm.ptrtoint %292 : !llvm.ptr to i64
-    %294 = llvm.call @malloc(%293) : (i64) -> !llvm.ptr
-    %295 = llvm.mlir.undef : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)>
-    %296 = llvm.insertvalue %294, %295[0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %297 = llvm.insertvalue %294, %296[1] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %298 = llvm.mlir.constant(0 : index) : i64
-    %299 = llvm.insertvalue %298, %297[2] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %300 = llvm.insertvalue %188, %299[3, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %301 = llvm.insertvalue %290, %300[4, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %302 = llvm.mlir.constant(1 : index) : i64
-    %303 = llvm.mlir.null : !llvm.ptr
-    %304 = llvm.getelementptr %303[%188] : (!llvm.ptr, i64) -> !llvm.ptr, i32
-    %305 = llvm.ptrtoint %304 : !llvm.ptr to i64
-    %306 = llvm.call @malloc(%305) : (i64) -> !llvm.ptr
-    %307 = llvm.mlir.undef : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)>
-    %308 = llvm.insertvalue %306, %307[0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %309 = llvm.insertvalue %306, %308[1] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %310 = llvm.mlir.constant(0 : index) : i64
-    %311 = llvm.insertvalue %310, %309[2] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %312 = llvm.insertvalue %188, %311[3, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %313 = llvm.insertvalue %302, %312[4, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
-    %314 = llvm.call @check(%56, %56, %60, %17, %52, %68, %68, %72, %34, %64, %294, %294, %298, %188, %290, %306, %306, %310, %188, %302) : (!llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64) -> i32
-    llvm.call @debugI32(%314) : (i32) -> ()
+    %289 = llvm.mlir.constant(1 : index) : i64
+    %290 = llvm.mlir.null : !llvm.ptr
+    %291 = llvm.getelementptr %290[%188] : (!llvm.ptr, i64) -> !llvm.ptr, i32
+    %292 = llvm.ptrtoint %291 : !llvm.ptr to i64
+    %293 = llvm.call @malloc(%292) : (i64) -> !llvm.ptr
+    %294 = llvm.mlir.undef : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)>
+    %295 = llvm.insertvalue %293, %294[0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %296 = llvm.insertvalue %293, %295[1] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %297 = llvm.mlir.constant(0 : index) : i64
+    %298 = llvm.insertvalue %297, %296[2] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %299 = llvm.insertvalue %188, %298[3, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %300 = llvm.insertvalue %289, %299[4, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %301 = llvm.mlir.constant(1 : index) : i64
+    %302 = llvm.mlir.null : !llvm.ptr
+    %303 = llvm.getelementptr %302[%188] : (!llvm.ptr, i64) -> !llvm.ptr, i32
+    %304 = llvm.ptrtoint %303 : !llvm.ptr to i64
+    %305 = llvm.call @malloc(%304) : (i64) -> !llvm.ptr
+    %306 = llvm.mlir.undef : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)>
+    %307 = llvm.insertvalue %305, %306[0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %308 = llvm.insertvalue %305, %307[1] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %309 = llvm.mlir.constant(0 : index) : i64
+    %310 = llvm.insertvalue %309, %308[2] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %311 = llvm.insertvalue %188, %310[3, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %312 = llvm.insertvalue %301, %311[4, 0] : !llvm.struct<(ptr, ptr, i64, array<1 x i64>, array<1 x i64>)> 
+    %313 = llvm.call @check(%56, %56, %60, %17, %52, %68, %68, %72, %34, %64, %293, %293, %297, %188, %289, %305, %305, %309, %188, %301) : (!llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64) -> i32
+    llvm.call @debugI32(%313) : (i32) -> ()
     llvm.br ^bb3
   ^bb3:  // 2 preds: ^bb1, ^bb2
     llvm.return
   }
-  llvm.func @initRelation(!llvm.ptr, !llvm.ptr, i64, i64, i64) attributes {sym_visibility = "private"}
+  llvm.func @initRelationR(!llvm.ptr, !llvm.ptr, i64, i64, i64) attributes {sym_visibility = "private"}
+  llvm.func @initRelationS(!llvm.ptr, !llvm.ptr, i64, i64, i64) attributes {sym_visibility = "private"}
   llvm.func @initRelationIndex(!llvm.ptr, !llvm.ptr, i64, i64, i64) attributes {sym_visibility = "private"}
   llvm.func @check(!llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64, !llvm.ptr, !llvm.ptr, i64, i64, i64) -> i32 attributes {sym_visibility = "private"}
   llvm.func @printMemrefI32(i64, !llvm.ptr) attributes {sym_visibility = "private"}

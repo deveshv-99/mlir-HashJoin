@@ -2,12 +2,12 @@
 // /Data/devesh/llvm-project/mlir/test/Integration/GPU/CUDA/nested-loop.mlir
 
 module attributes {gpu.container_module} {
-    memref.global constant @buildRelationRows : memref<1xindex> = dense<[1000000]>
-    memref.global constant @probeRelationRows : memref<1xindex> = dense<[1000000]>
+    memref.global constant @buildRelationRows : memref<1xindex> = dense<[100000000]>
+    memref.global constant @probeRelationRows : memref<1xindex> = dense<[100000000]>
 
-    memref.global constant @hashTableSize : memref<1xindex> = dense<[100000]>
+    memref.global constant @hashTableSize : memref<1xindex> = dense<[10000000]>
 
-    memref.global constant @numberOfThreadsPerBlock : memref<1xindex> = dense<[1024]>
+    memref.global constant @numberOfThreadsPerBlock : memref<1xindex> = dense<[128]>
 
     // Function to print the contents of a single memref value
     func.func @debugI32(%inputValue: i32) {
@@ -555,8 +555,8 @@ module attributes {gpu.container_module} {
         // call @printMemrefI32(%dst1) : (memref<*xi32>) -> ()
 
         // Allocate device memory for the relations
-        %devicebuildRelation = gpu.alloc(%buildRelationRows) : memref<?xi32>
-        gpu.memcpy %devicebuildRelation, %hostBuildRelation : memref<?xi32>, memref<?xi32>
+        %deviceBuildRelation = gpu.alloc(%buildRelationRows) : memref<?xi32>
+        gpu.memcpy %deviceBuildRelation, %hostBuildRelation : memref<?xi32>, memref<?xi32>
         %deviceProbeRelation = gpu.alloc(%probeRelationRows) : memref<?xi32>
         gpu.memcpy %deviceProbeRelation, %hostProbeRelation : memref<?xi32>, memref<?xi32>
 
@@ -568,7 +568,7 @@ module attributes {gpu.container_module} {
         func.call @initializeHashTable(%hashTableSize, %hashTablePointers) : (index, memref<?xi32>) -> ()
         %hashTableSizeI32 = arith.index_cast %hashTableSize : index to i32
 
-        func.call @buildTable(%devicebuildRelation, %buildRelationRows, %hashTablePointers, %linkedListKey, %linkedListRowId, %linkedListnextIndex, %hashTableSizeI32) 
+        func.call @buildTable(%deviceBuildRelation, %buildRelationRows, %hashTablePointers, %linkedListKey, %linkedListRowId, %linkedListnextIndex, %hashTableSizeI32) 
         : (memref<?xi32>, index, memref<?xi32>, memref<?xi32>, memref<?xindex>, memref<?xindex>, i32) -> ()
 
         // Print hash-table
