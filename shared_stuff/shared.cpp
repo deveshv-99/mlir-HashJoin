@@ -4,11 +4,16 @@
 #include <algorithm>
 #include <vector>
 #include <chrono>
+#include <random>
 #include <cassert>
 
 std::chrono::high_resolution_clock::time_point start;
 
-// Timer start
+// For range of values in the key columns of the relation
+int32_t lowerRange = 1;
+int32_t upperRange = 1000000;
+
+
 extern "C" void startTimer(){
     start = std::chrono::high_resolution_clock::now();
 }
@@ -33,15 +38,33 @@ extern "C" void initRelationIndex(int32_t* basePtr,int32_t* alignedPtr, int64_t 
     }
 }
 
+
+int generateRandomNumber(int min, int max) {
+    // Use the high-resolution clock to get a new seed at each function call
+    unsigned seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+
+    // Create a Mersenne Twister random number generator using the seed
+    std::mt19937 generator(seed);
+
+    // Create a distribution in the desired range
+    std::uniform_int_distribution<int> distribution(min, max);
+
+    // Generate and return a random number in the specified range
+    return distribution(generator);
+}
+
+
 // Initialize random values to the memref
 extern "C" void initRelation(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
     // set seed for random number generation
-    // srand(time(0));
+    srand(time(0));
     
     //assign random integers to alignedPtr
     for(auto i = 0; i < sizes; i++){
-        alignedPtr[i] = (int32_t)(rand()%1000);
+        
+        // Use rand() % range to generate numbers within a range
+        alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
     }
 }
 
@@ -60,8 +83,8 @@ extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffse
     std::vector<ElemType> mlirResult(result_size);
     std::vector<ElemType> result(result_size);
 
-    std::vector<int64_t> r(rAlignedPtr, rAlignedPtr + rSize);
-    std::vector<int64_t> s(sAlignedPtr, sAlignedPtr + sSize);
+    // std::vector<int64_t> r(rAlignedPtr, rAlignedPtr + rSize);
+    // std::vector<int64_t> s(sAlignedPtr, sAlignedPtr + sSize);
 
     // store result rowIDs values in inputs vector
     for(auto i = 0; i < result_size; i++){
@@ -70,7 +93,7 @@ extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffse
 
     // Nested loop join
     int curr_index = 0;
-
+    std::cout<<"1: "<<result_size<<std::endl;
     for(auto i = 0; i < rSize; ++i){
         for(auto j = 0; j < sSize; ++j){
             if(rAlignedPtr[i] == sAlignedPtr[j]){
@@ -83,10 +106,10 @@ extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffse
             }
         }
     }
-
+    std::cout<<"2: "<<curr_index<<std::endl;
     // Sort the results lexicographically so they can be directly compared
     std::sort(result.begin(), result.end());
     std::sort(mlirResult.begin(), mlirResult.end());
-    
+    std::cout<<"3: "<<result.size()<<std::endl;
     return result == mlirResult;
 }
