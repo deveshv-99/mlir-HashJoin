@@ -11,7 +11,7 @@ std::chrono::high_resolution_clock::time_point start;
 
 // For range of values in the key columns of the relation
 int32_t lowerRange = 1;
-int32_t upperRange = 1000000;
+int32_t upperRange = 100000;
 
 
 extern "C" void startTimer(){
@@ -39,23 +39,22 @@ extern "C" void initRelationIndex(int32_t* basePtr,int32_t* alignedPtr, int64_t 
 }
 
 
-int generateRandomNumber(int min, int max) {
-    // Use the high-resolution clock to get a new seed at each function call
-    unsigned seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+// int generateRandomNumber(int min, int max) {
+//     // Create a Mersenne Twister random number generator using the seed
+//     std::mt19937 generator(seed);
+//         // Use the high-resolution clock to get a new seed at each function call
+//     unsigned seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
 
-    // Create a Mersenne Twister random number generator using the seed
-    std::mt19937 generator(seed);
+//     // Create a distribution in the desired range
+//     std::uniform_int_distribution<int> distribution(min, max);
 
-    // Create a distribution in the desired range
-    std::uniform_int_distribution<int> distribution(min, max);
-
-    // Generate and return a random number in the specified range
-    return distribution(generator);
-}
+//     // Generate and return a random number in the specified range
+//     return distribution(generator);
+// }
 
 
 // Initialize random values to the memref
-extern "C" void initRelation(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
+extern "C" void initRelationR(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
     // set seed for random number generation
     srand(time(0));
@@ -63,8 +62,22 @@ extern "C" void initRelation(int32_t* basePtr,int32_t* alignedPtr, int64_t offse
     //assign random integers to alignedPtr
     for(auto i = 0; i < sizes; i++){
         
-        // Use rand() % range to generate numbers within a range
-        alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
+        // Use rand() % range to generate numbers within a range 
+        alignedPtr[i] = (int32_t)(rand() % (upperRange - lowerRange + 1) + lowerRange);
+        // alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
+    }
+}
+extern "C" void initRelationS(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
+
+    // set seed for random number generation
+    std::random_device rd;
+    srand(rd());
+    
+    //assign random integers to alignedPtr
+    for(auto i = 0; i < sizes; i++){
+        // Use rand() % range to generate numbers within a range 
+        alignedPtr[i] = (int32_t)(rand() % (upperRange - lowerRange + 1) + lowerRange);
+        // alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
     }
 }
 

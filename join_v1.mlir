@@ -2,10 +2,10 @@
 // /Data/devesh/llvm-project/mlir/test/Integration/GPU/CUDA/nested-loop.mlir
 
 module attributes {gpu.container_module} {
-    memref.global constant @buildRelationRows : memref<1xindex> = dense<[1000000]>
-    memref.global constant @probeRelationRows : memref<1xindex> = dense<[1000000]>
+    memref.global constant @buildRelationRows : memref<1xindex> = dense<[10000000]>
+    memref.global constant @probeRelationRows : memref<1xindex> = dense<[10000000]>
 
-    memref.global constant @hashTableSize : memref<1xindex> = dense<[10000]>
+    memref.global constant @hashTableSize : memref<1xindex> = dense<[100000]>
 
     memref.global constant @numberOfThreadsPerBlock : memref<1xindex> = dense<[1024]>
 
@@ -544,9 +544,9 @@ module attributes {gpu.container_module} {
 
         // Allocate and initialize the memrefs of probeKeys for both relations
         %hostBuildRelation = memref.alloc(%buildRelationRows) : memref<?xi32>
-        call @initRelation(%hostBuildRelation) : (memref<?xi32>) -> ()
+        call @initRelationR(%hostBuildRelation) : (memref<?xi32>) -> ()
         %hostProbeRelation = memref.alloc(%probeRelationRows) : memref<?xi32>
-        call @initRelation(%hostProbeRelation) : (memref<?xi32>) -> ()
+        call @initRelationS(%hostProbeRelation) : (memref<?xi32>) -> ()
 
         // %dst = memref.cast %hostBuildRelation : memref<?xi32> to memref<*xi32>
         // call @printMemrefI32(%dst) : (memref<*xi32>) -> ()
@@ -625,11 +625,11 @@ module attributes {gpu.container_module} {
 
             // checkBucketNotEmpty the result of join
 
-            %success = func.call @check(%hostBuildRelation, %hostProbeRelation, %hostResultIndicesR, %hostResultIndicesS)
-             : (memref<?xi32>, memref<?xi32>, memref<?xi32>, memref<?xi32>) -> i32
+            // %success = func.call @check(%hostBuildRelation, %hostProbeRelation, %hostResultIndicesR, %hostResultIndicesS)
+            //  : (memref<?xi32>, memref<?xi32>, memref<?xi32>, memref<?xi32>) -> i32
 
-            // print success
-            func.call @debugI32(%success) : (i32) -> ()
+            // // print success
+            // func.call @debugI32(%success) : (i32) -> ()
         
         }
         else{
@@ -648,7 +648,8 @@ module attributes {gpu.container_module} {
         return
     }
 
-    func.func private @initRelation(memref<?xi32>)
+    func.func private @initRelationR(memref<?xi32>)
+    func.func private @initRelationS(memref<?xi32>)
     func.func private @initRelationIndex(memref<?xi32>)
     func.func private @check(memref<?xi32>, memref<?xi32>, memref<?xi32>, memref<?xi32>) -> i32
     func.func private @printMemrefI32(memref<*xi32>)
