@@ -26,7 +26,7 @@ module attributes {gpu.container_module} {
         -> ( memref<?xi32>, memref<?xindex>, memref<?xindex>, memref<?xi32>) {
             
         // Allocate linked_list 
-        %linkedListProbeKey = gpu.alloc(%numTuples) : memref<?xi32>
+        %linkedListKey = gpu.alloc(%numTuples) : memref<?xi32>
         %linkedListRowId = gpu.alloc(%numTuples) : memref<?xindex>
         %linkedListnextIndex = gpu.alloc(%numTuples) : memref<?xindex>
 
@@ -34,7 +34,7 @@ module attributes {gpu.container_module} {
         %hashTablePointers = gpu.alloc(%hashTableSize) : memref<?xi32>
         
         // Return all of the allocated memory
-        return %linkedListProbeKey, %linkedListRowId, %linkedListnextIndex, %hashTablePointers
+        return %linkedListKey, %linkedListRowId, %linkedListnextIndex, %hashTablePointers
             : memref<?xi32>, memref<?xindex>, memref<?xindex>, memref<?xi32>
     }
 
@@ -75,7 +75,7 @@ module attributes {gpu.container_module} {
     }
 
     func.func @buildTable(%buildRelation : memref<?xi32>, %buildRelationRows : index, %hashTablePointers : memref<?xi32>,
-        %linkedListProbeKey : memref<?xi32>, %linkedListRowId : memref<?xindex>, %linkedListnextIndex : memref<?xindex>, %hashTableSize : i32) {
+        %linkedListKey : memref<?xi32>, %linkedListRowId : memref<?xindex>, %linkedListnextIndex : memref<?xindex>, %hashTableSize : i32) {
         
         // Constants
         %zeroIndex = arith.constant 0 : index
@@ -99,7 +99,7 @@ module attributes {gpu.container_module} {
         gpu.launch_func @kernelBuild::@build
         blocks in (%numberOfBlocks, %oneIndex, %oneIndex) 
         threads in (%threadsPerBlock, %oneIndex, %oneIndex)
-        args(%buildRelation : memref<?xi32>, %buildRelationRows : index, %hashTablePointers : memref<?xi32>, %linkedListProbeKey : memref<?xi32>,
+        args(%buildRelation : memref<?xi32>, %buildRelationRows : index, %hashTablePointers : memref<?xi32>, %linkedListKey : memref<?xi32>,
             %linkedListRowId : memref<?xindex>, %linkedListnextIndex : memref<?xindex>, %freeIndex : memref<1xi32>, %hashTableSize : i32)
 
         func.call @endTimer() : () -> ()
@@ -107,7 +107,7 @@ module attributes {gpu.container_module} {
 
     }
 
-    func.func @countRows(%probeRelation : memref<?xi32>, %probeRelationRows : index, %hashTablePointers : memref<?xi32>,%linkedListProbeKey : memref<?xi32>,
+    func.func @countRows(%probeRelation : memref<?xi32>, %probeRelationRows : index, %hashTablePointers : memref<?xi32>,%linkedListKey : memref<?xi32>,
         %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,  %prefixSumArray : memref<?xindex>, %hashTableSize : i32) -> (index) {
 
         // Constants
@@ -131,7 +131,7 @@ module attributes {gpu.container_module} {
         blocks in (%numberOfBlocks, %oneIndex, %oneIndex) 
         threads in (%threadsPerBlock, %oneIndex, %oneIndex)
         args(%probeRelation : memref<?xi32>, %probeRelationRows : index, %hashTablePointers : memref<?xi32>,
-            %linkedListProbeKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,
+            %linkedListKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,
             %prefixSumArray : memref<?xindex>, %globalBlockOffset : memref<1xi32>, %hashTableSize : i32)
 
         func.call @endTimer() : () -> ()
@@ -147,7 +147,7 @@ module attributes {gpu.container_module} {
     }
 
     func.func @probeRelation(%probeRelation : memref<?xi32>, %probeRelationRows : index, %hashTableSize : i32, %hashTablePointers : memref<?xi32>, 
-        %linkedListProbeKey : memref<?xi32>, %linkedListRowId : memref<?xindex> , %linkedListnextIndex : memref<?xindex>, %prefixSumArray : memref<?xindex>,
+        %linkedListKey : memref<?xi32>, %linkedListRowId : memref<?xindex> , %linkedListnextIndex : memref<?xindex>, %prefixSumArray : memref<?xindex>,
         %resultIndicesR : memref<?xi32>, %resultIndicesS : memref<?xi32>){
         
         // Constants
@@ -168,7 +168,7 @@ module attributes {gpu.container_module} {
         blocks in (%numberOfBlocks, %oneIndex, %oneIndex) 
         threads in (%threadsPerBlock, %oneIndex, %oneIndex)
         args(%probeRelation : memref<?xi32>, %probeRelationRows : index, %hashTableSize : i32, %hashTablePointers : memref<?xi32>,
-            %linkedListProbeKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,
+            %linkedListKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,
             %prefixSumArray : memref<?xindex>, %resultIndicesR : memref<?xi32>, %resultIndicesS : memref<?xi32>)
 
         func.call @endTimer() : () -> ()
@@ -210,7 +210,7 @@ module attributes {gpu.container_module} {
         }
 
 
-        func.func @insertNodeInHashTable(%key : i32, %hashTablePointers : memref<?xi32>, %linkedListProbeKey : memref<?xi32>,
+        func.func @insertNodeInHashTable(%key : i32, %hashTablePointers : memref<?xi32>, %linkedListKey : memref<?xi32>,
             %linkedListRowId : memref<?xindex>, %linkedListnextIndex : memref<?xindex>, %freeIndex : memref<1xi32>, %globalThreadIndex : index, %hashTableSize : i32) {
 
             // constants
@@ -228,7 +228,7 @@ module attributes {gpu.container_module} {
             %index = arith.index_cast %indexI32 : i32 to index
 
             // Insert key and rowID into the new node
-            memref.store %key, %linkedListProbeKey[%index] : memref<?xi32>
+            memref.store %key, %linkedListKey[%index] : memref<?xi32>
             memref.store %globalThreadIndex, %linkedListRowId[%index] : memref<?xindex>
 
             // compute the hash value
@@ -249,7 +249,7 @@ module attributes {gpu.container_module} {
         }
 
         gpu.func @build(%buildRelation : memref<?xi32>, %buildRelationRows : index,
-                %hashTablePointers : memref<?xi32>, %linkedListProbeKey : memref<?xi32>, %linkedListRowId : memref<?xindex>, 
+                %hashTablePointers : memref<?xi32>, %linkedListKey : memref<?xi32>, %linkedListRowId : memref<?xindex>, 
                 %linkedListnextIndex : memref<?xindex>, %freeIndex : memref<1xi32>, %hashTableSize : i32)
             kernel
         {
@@ -268,7 +268,7 @@ module attributes {gpu.container_module} {
 
                 %key = memref.load %buildRelation[%globalThreadIndex] : memref<?xi32>
                 
-                func.call @insertNodeInHashTable(%key, %hashTablePointers, %linkedListProbeKey, %linkedListRowId, %linkedListnextIndex, %freeIndex, %globalThreadIndex, %hashTableSize) 
+                func.call @insertNodeInHashTable(%key, %hashTablePointers, %linkedListKey, %linkedListRowId, %linkedListnextIndex, %freeIndex, %globalThreadIndex, %hashTableSize) 
                 : (i32, memref<?xi32>, memref<?xi32>, memref<?xindex>, memref<?xindex>, memref<1xi32>, index, i32) -> ()
                
             }
@@ -286,7 +286,7 @@ module attributes {gpu.container_module} {
         }
 
         gpu.func @count (%probeRelation : memref<?xi32>, %probeRelationRows : index, %hashTablePointers : memref<?xi32>,
-            %linkedListProbeKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,  
+            %linkedListKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,  
             %prefixSumArray : memref<?xindex>, %globalBlockOffset : memref<1xi32>, %hashTableSize : i32)
             // sharedMEmPrefixSum size should be the block size
             workgroup(%sharedMemPrefixSum : memref<1024xindex, 3>, %sharedMemTotalSum : memref<1xindex, 3>)
@@ -341,7 +341,7 @@ module attributes {gpu.container_module} {
                     // do while loop to iterate over the linked list
                     %res, %bucket_size = scf.while (%arg1 = %currentBucketIndex, %arg2 = %count) :(index, index) -> (index, index) {
                         // load the build side key
-                        %currentBuildKey = memref.load %linkedListProbeKey[%arg1] : memref<?xi32>
+                        %currentBuildKey = memref.load %linkedListKey[%arg1] : memref<?xi32>
                         // gpu.printf " %d  %d  \n" %hashValueI32 , %currentBuildKey : i32, i32
                         // compare the keys
                         %cmp = arith.cmpi "eq", %probeKey, %currentBuildKey : i32
@@ -434,7 +434,7 @@ module attributes {gpu.container_module} {
         }
 
         gpu.func @probe (%probeRelation : memref<?xi32>, %probeRelationRows : index, %hashTableSize : i32, %hashTablePointers : memref<?xi32>,
-            %linkedListProbeKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,  
+            %linkedListKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,  
             %prefixSumArray : memref<?xindex>, %resultIndicesR : memref<?xi32>, %resultIndicesS : memref<?xi32>)
             private (%privateWriteIndex : memref<1xindex>)
             kernel
@@ -482,7 +482,7 @@ module attributes {gpu.container_module} {
                     // do while loop to iterate over the linked list
                     %res = scf.while (%arg1 = %currentBucketIndex) :(index) -> index {
                         // load the current probeKey
-                        %currentBuildKey = memref.load %linkedListProbeKey[%arg1] : memref<?xi32>
+                        %currentBuildKey = memref.load %linkedListKey[%arg1] : memref<?xi32>
 
                         // compare the probeKeys
                         %cmp = arith.cmpi "eq", %probeKey, %currentBuildKey : i32
@@ -542,7 +542,7 @@ module attributes {gpu.container_module} {
         %numberOfThreadsPerBlockMemref = memref.get_global @numberOfThreadsPerBlock : memref<1xindex>
         %numberOfThreadsPerBlock = memref.load %numberOfThreadsPerBlockMemref[%zeroIndex] : memref<1xindex>
 
-        // Allocate and initialize the memrefs of probeKeys for both relations
+        // Allocate and initialize the memrefs of pkeys for both relations
         %hostBuildRelation = memref.alloc(%buildRelationRows) : memref<?xi32>
         call @initRelationR(%hostBuildRelation) : (memref<?xi32>) -> ()
         %hostProbeRelation = memref.alloc(%probeRelationRows) : memref<?xi32>
@@ -562,13 +562,13 @@ module attributes {gpu.container_module} {
 
         // Number of rows in the build relation is the numTuples in the linked list
         // Allocate device memory for the hash table
-        %linkedListProbeKey, %linkedListRowId, %linkedListnextIndex, %hashTablePointers = func.call @allocateHashTable(%buildRelationRows, %hashTableSize) 
+        %linkedListKey, %linkedListRowId, %linkedListnextIndex, %hashTablePointers = func.call @allocateHashTable(%buildRelationRows, %hashTableSize) 
         : (index, index) -> (memref<?xi32>, memref<?xindex>, memref<?xindex>, memref<?xi32>)
 
         func.call @initializeHashTable(%hashTableSize, %hashTablePointers) : (index, memref<?xi32>) -> ()
         %hashTableSizeI32 = arith.index_cast %hashTableSize : index to i32
 
-        func.call @buildTable(%devicebuildRelation, %buildRelationRows, %hashTablePointers, %linkedListProbeKey, %linkedListRowId, %linkedListnextIndex, %hashTableSizeI32) 
+        func.call @buildTable(%devicebuildRelation, %buildRelationRows, %hashTablePointers, %linkedListKey, %linkedListRowId, %linkedListnextIndex, %hashTableSizeI32) 
         : (memref<?xi32>, index, memref<?xi32>, memref<?xi32>, memref<?xindex>, memref<?xindex>, i32) -> ()
 
         // Print hash-table
@@ -588,7 +588,7 @@ module attributes {gpu.container_module} {
         %prefixSumArray = gpu.alloc(%probeRelationRows) : memref<?xindex>
 
         // Get the resultSize from count phase
-        %resultSize = func.call @countRows(%deviceProbeRelation, %probeRelationRows, %hashTablePointers, %linkedListProbeKey, %linkedListRowId, %linkedListnextIndex, %prefixSumArray, %hashTableSizeI32)
+        %resultSize = func.call @countRows(%deviceProbeRelation, %probeRelationRows, %hashTablePointers, %linkedListKey, %linkedListRowId, %linkedListnextIndex, %prefixSumArray, %hashTableSizeI32)
         : (memref<?xi32>, index,  memref<?xi32>,  memref<?xi32>, memref<?xindex>, memref<?xindex>, memref<?xindex>, i32) -> index
 
         
@@ -604,7 +604,7 @@ module attributes {gpu.container_module} {
             %resultIndicesR = gpu.alloc(%resultSize) : memref<?xi32>
             %resultIndicesS = gpu.alloc(%resultSize) : memref<?xi32>
         
-            func.call @probeRelation(%deviceProbeRelation, %probeRelationRows, %hashTableSizeI32, %hashTablePointers, %linkedListProbeKey, %linkedListRowId, %linkedListnextIndex, %prefixSumArray, %resultIndicesR, %resultIndicesS)
+            func.call @probeRelation(%deviceProbeRelation, %probeRelationRows, %hashTableSizeI32, %hashTablePointers, %linkedListKey, %linkedListRowId, %linkedListnextIndex, %prefixSumArray, %resultIndicesR, %resultIndicesS)
             : (memref<?xi32>, index, i32, memref<?xi32>,  memref<?xi32>, memref<?xindex>, memref<?xindex>, memref<?xindex>, memref<?xi32>, memref<?xi32>) -> ()
 
             // transfer the result back to host
