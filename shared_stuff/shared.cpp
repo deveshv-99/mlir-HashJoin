@@ -106,7 +106,7 @@ extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffse
 
     // Nested loop join
     int curr_index = 0;
-    std::cout<<"1: "<<result_size<<std::endl;
+    //std::cout<<"1: "<<result_size<<std::endl;
     for(auto i = 0; i < rSize; ++i){
         for(auto j = 0; j < sSize; ++j){
             if(rAlignedPtr[i] == sAlignedPtr[j]){
@@ -119,10 +119,10 @@ extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffse
             }
         }
     }
-    std::cout<<"2: "<<curr_index<<std::endl;
+    //std::cout<<"2: "<<curr_index<<std::endl;
     // Sort the results lexicographically so they can be directly compared
     std::sort(result.begin(), result.end());
     std::sort(mlirResult.begin(), mlirResult.end());
-    std::cout<<"3: "<<result.size()<<std::endl;
+    //std::cout<<"3: "<<result.size()<<std::endl;
     return result == mlirResult;
 }
