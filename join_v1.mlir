@@ -7,7 +7,7 @@ module attributes {gpu.container_module} {
 
     memref.global constant @hashTableSize : memref<1xindex> = dense<[10000000]>
 
-    memref.global constant @numberOfThreadsPerBlock : memref<1xindex> = dense<[128]>
+    memref.global constant @numberOfThreadsPerBlock : memref<1xindex> = dense<[256]>
 
     // Function to print the contents of a single memref value
     func.func @debugI32(%inputValue: i32) {

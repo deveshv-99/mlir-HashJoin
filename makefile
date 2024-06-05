@@ -9,6 +9,9 @@ shared:
 join_v1:
 	./run_test.sh join_v1.mlir
 
+join_v2:
+	./run_test.sh join_v2.mlir
+
 
 join_v1_ll:
 	./run_test_ll.sh join_v1.mlir > join_v1.ll
