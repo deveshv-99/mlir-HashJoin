@@ -428,6 +428,7 @@ module attributes {gpu.container_module} {
         gpu.func @probe (%probeRelation : memref<?xi32>, %probeRelationRows : index, %hashTableSize : i32, %hashTablePointers : memref<?xi32>,
             %linkedListKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,  
             %prefixSumArray : memref<?xindex>, %resultIndicesR : memref<?xi32>, %resultIndicesS : memref<?xi32>)
+            workgroup (%tempResultBufferR : memref<2048xi32>, %tempResultBufferS : memref<2048xi32>, %bufferIndex : memref<1xi32>)
             private (%privateWriteIndex : memref<1xindex>)
             kernel
         {
@@ -435,23 +436,34 @@ module attributes {gpu.container_module} {
             %blockId = gpu.block_id x
             %threadId = gpu.thread_id x
 
+            //constants
+            %negOneIndex = arith.constant -1 : index 
+            %zeroIndex = arith.constant 0 : index
+            %oneIndex = arith.constant 1 : index
+
+            %negOneI32 = arith.constant -1 : i32
+            %zeroI32 = arith.constant 0 : i32
+            %oneI32 = arith.constant 1 : i32
+            %sharedBufferSize = arith.constant 2048 : i32
+
             // globalThreadIndex = blockDim * blockId + threadId
             %globalThreadOffsetInBlocks = arith.muli %blockDim, %blockId : index
             %globalThreadIndex = arith.addi %globalThreadOffsetInBlocks, %threadId : index
+            %globalThreadIndexI32 = arith.index_cast %globalThreadIndex : index to i32
+
+            // store 0 in bufferIndex
+            %isThreadZero = arith.cmpi "eq", %threadId, %zeroIndex : index
+            scf.if %isThreadZero {
+                memref.store %zeroI32, %bufferIndex[%zeroIndex] : memref<1xi32>
+            }
+            
 
             // check if the thread is valid
             %isThreadValid = arith.cmpi "ult", %globalThreadIndex, %probeRelationRows : index
 
             scf.if %isThreadValid {
-                //constants
-                %negOneIndex = arith.constant -1 : index 
-                %zeroIndex = arith.constant 0 : index
-                %oneIndex = arith.constant 1 : index
-
-                %negOneI32 = arith.constant -1 : i32
                 
                 // For each thread, compare its probeKey with all keys in the relevant hash bucket chain
-
                 %probeKey = memref.load %probeRelation[%globalThreadIndex] : memref<?xi32>
 
                 %hashValueI32 = func.call @hash(%probeKey, %hashTableSize) : (i32, i32) -> i32
@@ -459,8 +471,58 @@ module attributes {gpu.container_module} {
 
                 // To get the first node in the linked list
                 %currentBucketIndexI32 = memref.load %hashTablePointers[%hashValue] : memref<?xi32>
-                
                 %checkBucketNotEmpty = arith.cmpi "ne", %currentBucketIndexI32, %negOneI32 : i32 
+
+                scf.if %checkBucketNotEmpty{
+                    %currentBucketIndex = arith.index_cast %currentBucketIndexI32 : i32 to index 
+                    
+                    // do while loop to iterate over the linked list
+                    %res = scf.while (%arg1 = %currentBucketIndex) :(index) -> index {
+                        // load the current probeKey
+                        %currentBuildKey = memref.load %linkedListKey[%arg1] : memref<?xi32>
+
+                        // compare the probeKeys
+                        %cmp = arith.cmpi "eq", %probeKey, %currentBuildKey : i32
+
+                        // if probeKey matches, store the rowIDs and increment the current privateWriteIndex
+                        scf.if %cmp {
+                            // Atomically get the shared index
+                            %sharedIndexI32 = memref.atomic_rmw addi %oneI32, %bufferIndex[%zeroIndex] : (i32, memref<1xi32>) -> i32
+
+                            // --------------------------------------- TODO ---------------------------------------
+                            // If sharedIndex is less than 2048, write in shared memory.. else write in global memory
+                            %withinSharedBufferSize = arith.cmpi "ult", %sharedIndexI32, %sharedBufferSize : i32
+                            %sharedIndex = arith.index_cast %sharedIndexI32 : i32 to index
+                            %buildRelationRowID = memref.load %linkedListRowId[%arg1] : memref<?xindex>
+                            %buildRelationRowIDI32 = arith.index_cast %buildRelationRowID : index to i32
+
+                            // Store the build relation's rowID
+                            memref.store %buildRelationRowIDI32, %tempResultBufferR[%sharedIndex] : memref<2048xi32>
+                            // Store the probe relation's rowID
+                            memref.store %globalThreadIndexI32, %tempResultBufferS[%sharedIndex] : memref<2048xi32>
+                            
+                            %newPrivateWriteIndex = arith.addi %currentPrivateWriteIndex, %oneIndex : index
+                            memref.store %newPrivateWriteIndex, %privateWriteIndex[%zeroIndex] : memref<1xindex>
+                        }
+                        
+                        // move to the next node in the linked list
+                        %nextIndex = memref.load %linkedListnextIndex[%arg1] : memref<?xindex>
+                        %condition = arith.cmpi "ne", %nextIndex, %negOneIndex : index
+                        scf.condition(%condition) %nextIndex : index
+
+                    } do {
+                        ^bb0(%arg2: index):
+                            scf.yield %arg2 : index
+                    }
+                }
+
+
+
+
+
+
+
+
 
                 //store privateWriteIndex in private variable
                 %currentWriteIndex = memref.load %prefixSumArray[%globalThreadIndex] : memref<?xindex>
