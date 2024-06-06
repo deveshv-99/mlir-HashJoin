@@ -16,6 +16,9 @@ join_v2:
 join_v1_ll:
 	./run_test_ll.sh join_v1.mlir > join_v1.ll
 
+join_v2_ll:
+	./run_test_ll.sh join_v1.mlir > join_v2.ll
+
 
 clean:
 	@ rm -f ./shared_stuff/shared.o
