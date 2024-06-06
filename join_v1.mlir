@@ -319,7 +319,7 @@ module attributes {gpu.container_module} {
                 memref.store %zeroIndex, %sharedMemPrefixSum[%threadId] : memref<1024xindex, 3>
 
                 // Step 1: Compute the prefixSumArray sum for each thread, which is used for calculating the start index in the result array 
-                // For each thread, compare its probeKey with all probeKeys in the relevant hash bucket chain
+                // For each thread, compare its probeKey with all keys in the relevant hash bucket chain
 
                 %probeKey = memref.load %probeRelation[%globalThreadIndex] : memref<?xi32>
 
@@ -459,7 +459,7 @@ module attributes {gpu.container_module} {
 
                 %negOneI32 = arith.constant -1 : i32
                 
-                // For each thread, compare its probeKey with all probeKeys in the relevant hash bucket chain
+                // For each thread, compare its probeKey with all keys in the relevant hash bucket chain
 
                 %probeKey = memref.load %probeRelation[%globalThreadIndex] : memref<?xi32>
 

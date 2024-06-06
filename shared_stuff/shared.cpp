@@ -14,11 +14,12 @@ int32_t lowerRange = 1;
 int32_t upperRange = 10'000'000;
 
 
+// Start the timer
 extern "C" void startTimer(){
     start = std::chrono::high_resolution_clock::now();
 }
 
-// Timer end
+// End the timer and print the time taken
 extern "C" void endTimer(){
     auto stop = std::chrono::high_resolution_clock::now();
 
@@ -28,6 +29,7 @@ extern "C" void endTimer(){
     std::cout << ", time taken: " << duration.count() << " microseconds" << std::endl;
     x++;
 }
+
 
 // Initialize index as the key to the memref
 extern "C" void initRelationIndex(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
@@ -53,7 +55,7 @@ extern "C" void initRelationIndex(int32_t* basePtr,int32_t* alignedPtr, int64_t 
 // }
 
 
-// Initialize random values to the memref
+// Initialize random values to the memref according to current time
 extern "C" void initRelationR(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
     // set seed for random number generation
@@ -67,6 +69,8 @@ extern "C" void initRelationR(int32_t* basePtr,int32_t* alignedPtr, int64_t offs
         // alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
     }
 }
+
+// Initialize random values to the memref according to random_device
 extern "C" void initRelationS(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
     // set seed for random number generation
@@ -81,7 +85,17 @@ extern "C" void initRelationS(int32_t* basePtr,int32_t* alignedPtr, int64_t offs
     }
 }
 
-// Check for the correctness of the result
+
+/*
+Takes input as 4 memrefs:
+
+1. key column of table 1
+2. key column of table 2
+3. rowID column of result for table 1
+4. rowID column of result for table 2
+
+Returns 1 if the result generated is same as that received, 0 if it is not equal
+*/
 extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffset, int64_t rSize, int64_t rStride, 
     int32_t* sBasePtr, int32_t* sAlignedPtr, int64_t sOffset, int64_t sSize, int64_t sStride, 
     int32_t* rIndicesMLIRbasePtr, int32_t* rIndicesMLIRAlignedPtr, int64_t rIndicesMLIRoffset, int64_t rIndicesMLIRSize, int64_t rIndicesMLIRstride,

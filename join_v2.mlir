@@ -280,7 +280,7 @@ module attributes {gpu.container_module} {
     gpu.module @kernelCount {
 
         func.func @hash(%probeKey : i32, %hashTableSize : i32) -> i32{
-            //%modValue = arith.constant 10000 : i32
+        
             %hashValue = arith.remui %probeKey, %hashTableSize : i32
             return %hashValue : i32
         }
@@ -319,7 +319,7 @@ module attributes {gpu.container_module} {
                 memref.store %zeroIndex, %sharedMemPrefixSum[%threadId] : memref<1024xindex, 3>
 
                 // Step 1: Compute the prefixSumArray sum for each thread, which is used for calculating the start index in the result array 
-                // For each thread, compare its probeKey with all probeKeys in the relevant hash bucket chain
+                // For each thread, compare its probeKey with all Keys in the relevant hash bucket chain
 
                 %probeKey = memref.load %probeRelation[%globalThreadIndex] : memref<?xi32>
 
@@ -365,7 +365,7 @@ module attributes {gpu.container_module} {
                 
                 gpu.barrier // we need this so that all the warps are done computing the thread local sums
 
-                //Step 2: Compute the global prefix sum
+                //Step 2: Compute the total block prefix sum
 
                 %isThreadZero = arith.cmpi "eq", %threadId, %zeroIndex : index
                 scf.if %isThreadZero {
@@ -420,7 +420,7 @@ module attributes {gpu.container_module} {
     gpu.module @kernelProbe {
 
         func.func @hash(%probeKey : i32, %hashTableSize : i32) -> i32{
-            //%modValue = arith.constant 10000 : i32
+            
             %hashValue = arith.remui %probeKey, %hashTableSize : i32
             return %hashValue : i32
         }
@@ -450,7 +450,7 @@ module attributes {gpu.container_module} {
 
                 %negOneI32 = arith.constant -1 : i32
                 
-                // For each thread, compare its probeKey with all probeKeys in the relevant hash bucket chain
+                // For each thread, compare its probeKey with all keys in the relevant hash bucket chain
 
                 %probeKey = memref.load %probeRelation[%globalThreadIndex] : memref<?xi32>
 
