@@ -2,10 +2,10 @@
 // /Data/devesh/llvm-project/mlir/test/Integration/GPU/CUDA/nested-loop.mlir
 
 module attributes {gpu.container_module} {
-    memref.global constant @buildRelationRows : memref<1xindex> = dense<[10]>
-    memref.global constant @probeRelationRows : memref<1xindex> = dense<[10]>
+    memref.global constant @buildRelationRows : memref<1xindex> = dense<[100000000]>
+    memref.global constant @probeRelationRows : memref<1xindex> = dense<[100000000]>
 
-    memref.global constant @hashTableSize : memref<1xindex> = dense<[5]>
+    memref.global constant @hashTableSize : memref<1xindex> = dense<[1000000]>
 
     memref.global constant @numberOfThreadsPerBlock : memref<1xindex> = dense<[256]>
 
@@ -171,22 +171,23 @@ module attributes {gpu.container_module} {
             %linkedListKey : memref<?xi32>, %linkedListRowId  : memref<?xindex>, %linkedListnextIndex : memref<?xindex>,
             %prefixSumArray : memref<?xindex>, %resultIndicesR : memref<?xi32>, %resultIndicesS : memref<?xi32>)
 
-        // %hostPrefixSumArray = memref.alloc(%probeRelationRows) : memref<?xindex>
-        // gpu.memcpy %hostPrefixSumArray, %prefixSumArray : memref<?xindex>, memref<?xindex>
-        // // print
+        %hostPrefixSumArray = memref.alloc(%probeRelationRows) : memref<?xindex>
+        gpu.memcpy %hostPrefixSumArray, %prefixSumArray : memref<?xindex>, memref<?xindex>
+        // print
         // %dst = memref.cast %hostPrefixSumArray : memref<?xindex> to memref<*xindex>
         // func.call @printMemrefInd(%dst) : (memref<*xindex>) -> ()
         
         // %hashTableSizeIndex = arith.index_cast %hashTableSize : i32 to index
+
         // %hostHashPointers = memref.alloc(%hashTableSizeIndex) : memref<?xi32>
         // gpu.memcpy %hostHashPointers, %hashTablePointers : memref<?xi32>, memref<?xi32>
-        // %dst = memref.cast %hostHashPointers : memref<?xi32> to memref<*xi32>
-        // func.call @printMemrefI32(%dst) : (memref<*xi32>) -> ()
+        // %dst2 = memref.cast %hostHashPointers : memref<?xi32> to memref<*xi32>
+        // func.call @printMemrefI32(%dst2) : (memref<*xi32>) -> ()
 
         // %hostLinkKey = memref.alloc(%probeRelationRows) : memref<?xi32>
         // gpu.memcpy %hostLinkKey, %linkedListKey : memref<?xi32>, memref<?xi32>
-        // %dst = memref.cast %hostLinkKey : memref<?xi32> to memref<*xi32>
-        // func.call @printMemrefI32(%dst) : (memref<*xi32>) -> ()
+        // %dst3 = memref.cast %hostLinkKey : memref<?xi32> to memref<*xi32>
+        // func.call @printMemrefI32(%dst3) : (memref<*xi32>) -> ()
 
         // %hostLinkRowID = memref.alloc(%probeRelationRows) : memref<?xindex>
         // gpu.memcpy %hostLinkRowID, %linkedListnextIndex : memref<?xindex>, memref<?xindex>
@@ -476,17 +477,19 @@ module attributes {gpu.container_module} {
             %globalThreadIndex = arith.addi %globalThreadOffsetInBlocks, %threadId : index
             %globalThreadIndexI32 = arith.index_cast %globalThreadIndex : index to i32
 
-            // store 0 in bufferIndex
+            
             %isThreadZero = arith.cmpi "eq", %threadId, %zeroIndex : index
             scf.if %isThreadZero {
                 // gpu.printf "threadId: %d \n" %threadId : index
+                // store 0 in bufferIndex
                 memref.store %zeroI32, %bufferIndex[%zeroIndex] : memref<1xi32, 3>
                 %globalWriteIndex = memref.load %prefixSumArray[%globalThreadIndex] : memref<?xindex>
                 %globalWriteIndexI32 = arith.index_cast %globalWriteIndex : index to i32
                 // gpu.printf "globalWriteIndexI32: %d \n" %globalWriteIndexI32 : i32
                 memref.store %globalWriteIndexI32, %globalWriteIndexMemref[%zeroIndex] : memref<1xi32, 3>
             }
-            
+
+            gpu.barrier
             // check if the thread is valid
             %isThreadValid = arith.cmpi "ult", %globalThreadIndex, %probeRelationRows : index
 
@@ -557,15 +560,20 @@ module attributes {gpu.container_module} {
                     }
                 }
             }
+
+            gpu.barrier
+
             // STEP 3: Transfer result from shared memory to global memory
             %globalWriteIdI32 = memref.load %globalWriteIndexMemref[%zeroIndex] : memref<1xi32, 3>
             %globalWriteId = arith.index_cast %globalWriteIdI32 : i32 to index
             // gpu.printf "globalWriteId: %d \n" %globalWriteId : index
+
             // Check if the shared memory is full:
             // yes, then write till shared memory size 
             // no, then write till the shared index 
-            %sharedIndexI32 = memref.load %bufferIndex[%zeroIndex] : memref<1xi32, 3>
 
+            %sharedIndexI32 = memref.load %bufferIndex[%zeroIndex] : memref<1xi32, 3>
+            // gpu.printf "SharedIndexSize %d\n" %sharedIndexI32 : i32
             %isBufferFull = arith.cmpi "ugt", %sharedIndexI32, %sharedBufferSizeI32 : i32
             %upperLimit = scf.if %isBufferFull -> (index) {
                 scf.yield %sharedBufferSize : index
@@ -591,7 +599,6 @@ module attributes {gpu.container_module} {
                 // Store the probe relation's rowID
                 memref.store %probeRelationRowID, %resultIndicesS[%writeLocation] : memref<?xi32>
 
-                // gpu.pri
             }
             gpu.return
         }
@@ -625,8 +632,8 @@ module attributes {gpu.container_module} {
         // %dst = memref.cast %hostBuildRelation : memref<?xi32> to memref<*xi32>
         // call @printMemrefI32(%dst) : (memref<*xi32>) -> ()
 
-        %dst1 = memref.cast %hostProbeRelation : memref<?xi32> to memref<*xi32>
-        call @printMemrefI32(%dst1) : (memref<*xi32>) -> ()
+        // %dst1 = memref.cast %hostProbeRelation : memref<?xi32> to memref<*xi32>
+        // call @printMemrefI32(%dst1) : (memref<*xi32>) -> ()
 
         // Allocate device memory for the relations
         %deviceBuildRelation = gpu.alloc(%buildRelationRows) : memref<?xi32>
