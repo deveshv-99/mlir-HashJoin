@@ -21,3 +21,10 @@ module attributes {gpu.container_module} {
     }
     func.func private @printMemrefInd(memref<*xindex>)
 }
+
+    memref.global constant @buildRelationRows : memref<1xindex> = dense<[1000000]>
+    memref.global constant @probeRelationRows : memref<1xindex> = dense<[1000000]>
+    memref.global constant @hashTableSize : memref<1xindex> = dense<[10000]>
+
+    memref.global constant @numberOfThreadsPerBlock : memref<1xindex> = dense<[256]>
+    

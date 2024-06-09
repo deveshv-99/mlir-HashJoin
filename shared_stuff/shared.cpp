@@ -4,16 +4,22 @@
 #include <algorithm>
 #include <vector>
 #include <chrono>
+#include <random>
 #include <cassert>
 
 std::chrono::high_resolution_clock::time_point start;
 
-// Timer start
+// For range of values in the key columns of the relation
+int32_t lowerRange = 1;
+int32_t upperRange = 1'000'000'000;
+
+
+// Start the timer
 extern "C" void startTimer(){
     start = std::chrono::high_resolution_clock::now();
 }
 
-// Timer end
+// End the timer and print the time taken
 extern "C" void endTimer(){
     auto stop = std::chrono::high_resolution_clock::now();
 
@@ -24,6 +30,7 @@ extern "C" void endTimer(){
     x++;
 }
 
+
 // Initialize index as the key to the memref
 extern "C" void initRelationIndex(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
@@ -33,19 +40,92 @@ extern "C" void initRelationIndex(int32_t* basePtr,int32_t* alignedPtr, int64_t 
     }
 }
 
-// Initialize random values to the memref
-extern "C" void initRelation(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
+
+// int generateRandomNumber(int min, int max) {
+//     // Create a Mersenne Twister random number generator using the seed
+//     std::mt19937 generator(seed);
+//         // Use the high-resolution clock to get a new seed at each function call
+//     unsigned seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+
+//     // Create a distribution in the desired range
+//     std::uniform_int_distribution<int> distribution(min, max);
+
+//     // Generate and return a random number in the specified range
+//     return distribution(generator);
+// }
+
+
+// Initialize random values to the memref according to current time
+extern "C" void initRelationR(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
 
     // set seed for random number generation
-    // srand(time(0));
+    srand(time(0));
     
     //assign random integers to alignedPtr
     for(auto i = 0; i < sizes; i++){
-        alignedPtr[i] = (int32_t)(rand()%1000);
+        
+        // Use rand() % range to generate numbers within a range 
+        alignedPtr[i] = (int32_t)(rand() % (upperRange - lowerRange + 1) + lowerRange);
+        // alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
     }
+
+    // for(auto i = 0; i < sizes; i++){
+        
+    //     // Use rand() % range to generate numbers within a range 
+    //     alignedPtr[i] = (int32_t)(10);
+    //     // alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
+    // }
+
+    
 }
 
-// Check for the correctness of the result
+// Initialize random values to the memref according to random_device
+extern "C" void initRelationS(int32_t* basePtr,int32_t* alignedPtr, int64_t offset, int64_t sizes, int64_t strides){
+
+    // set seed for random number generation
+    std::random_device rd;
+    srand(rd());
+    
+    //assign random integers to alignedPtr
+    for(auto i = 0; i < sizes; i++){
+        // Use rand() % range to generate numbers within a range 
+        alignedPtr[i] = (int32_t)(rand() % (upperRange - lowerRange + 1) + lowerRange);
+        // alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
+    }
+
+
+    // for(auto i = 0; i < sizes; i++){
+    //     // Use rand() % range to generate numbers within a range 
+    //     alignedPtr[i] = (int32_t)(1);
+    //     // alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
+    // }
+
+    // alignedPtr[0]=10;
+    // alignedPtr[1]=10;
+    // alignedPtr[2]=3;
+    // alignedPtr[3]=2;
+    // alignedPtr[4]=3;
+    // alignedPtr[5]=3;
+    // alignedPtr[6]=5;
+    // alignedPtr[7]=3;
+    // alignedPtr[8]=5;
+    // alignedPtr[9]=2;
+    // alignedPtr[10]=2;
+    // alignedPtr[11]=3;
+
+}
+
+
+/*
+Takes input as 4 memrefs:
+
+1. key column of table 1
+2. key column of table 2
+3. rowID column of result for table 1
+4. rowID column of result for table 2
+
+Returns 1 if the result generated is same as that received, 0 if it is not equal
+*/
 extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffset, int64_t rSize, int64_t rStride, 
     int32_t* sBasePtr, int32_t* sAlignedPtr, int64_t sOffset, int64_t sSize, int64_t sStride, 
     int32_t* rIndicesMLIRbasePtr, int32_t* rIndicesMLIRAlignedPtr, int64_t rIndicesMLIRoffset, int64_t rIndicesMLIRSize, int64_t rIndicesMLIRstride,
@@ -60,8 +140,8 @@ extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffse
     std::vector<ElemType> mlirResult(result_size);
     std::vector<ElemType> result(result_size);
 
-    std::vector<int64_t> r(rAlignedPtr, rAlignedPtr + rSize);
-    std::vector<int64_t> s(sAlignedPtr, sAlignedPtr + sSize);
+    // std::vector<int64_t> r(rAlignedPtr, rAlignedPtr + rSize);
+    // std::vector<int64_t> s(sAlignedPtr, sAlignedPtr + sSize);
 
     // store result rowIDs values in inputs vector
     for(auto i = 0; i < result_size; i++){
@@ -70,7 +150,7 @@ extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffse
 
     // Nested loop join
     int curr_index = 0;
-
+    //std::cout<<"1: "<<result_size<<std::endl;
     for(auto i = 0; i < rSize; ++i){
         for(auto j = 0; j < sSize; ++j){
             if(rAlignedPtr[i] == sAlignedPtr[j]){
@@ -83,10 +163,10 @@ extern "C" int32_t check(int32_t* rBasePtr, int32_t* rAlignedPtr, int64_t rOffse
             }
         }
     }
-
+    //std::cout<<"2: "<<curr_index<<std::endl;
     // Sort the results lexicographically so they can be directly compared
     std::sort(result.begin(), result.end());
     std::sort(mlirResult.begin(), mlirResult.end());
-    
+    //std::cout<<"3: "<<result.size()<<std::endl;
     return result == mlirResult;
 }
