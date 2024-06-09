@@ -2,10 +2,10 @@
 // /Data/devesh/llvm-project/mlir/test/Integration/GPU/CUDA/nested-loop.mlir
 
 module attributes {gpu.container_module} {
-    memref.global constant @buildRelationRows : memref<1xindex> = dense<[100000000]>
-    memref.global constant @probeRelationRows : memref<1xindex> = dense<[100000000]>
+    memref.global constant @buildRelationRows : memref<1xindex> = dense<[10]>
+    memref.global constant @probeRelationRows : memref<1xindex> = dense<[10]>
 
-    memref.global constant @hashTableSize : memref<1xindex> = dense<[10000000]>
+    memref.global constant @hashTableSize : memref<1xindex> = dense<[5]>
 
     memref.global constant @numberOfThreadsPerBlock : memref<1xindex> = dense<[256]>
 
@@ -625,11 +625,11 @@ module attributes {gpu.container_module} {
 
             // check the result of join
 
-            // %success = func.call @check(%hostBuildRelation, %hostProbeRelation, %hostResultIndicesR, %hostResultIndicesS)
-            //  : (memref<?xi32>, memref<?xi32>, memref<?xi32>, memref<?xi32>) -> i32
+            %success = func.call @check(%hostBuildRelation, %hostProbeRelation, %hostResultIndicesR, %hostResultIndicesS)
+             : (memref<?xi32>, memref<?xi32>, memref<?xi32>, memref<?xi32>) -> i32
 
-            // // print success
-            // func.call @debugI32(%success) : (i32) -> ()
+            // print success
+            func.call @debugI32(%success) : (i32) -> ()
         
         }
         else{

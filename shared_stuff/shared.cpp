@@ -11,7 +11,7 @@ std::chrono::high_resolution_clock::time_point start;
 
 // For range of values in the key columns of the relation
 int32_t lowerRange = 1;
-int32_t upperRange = 10'000'000;
+int32_t upperRange = 10;
 
 
 // Start the timer
@@ -68,6 +68,18 @@ extern "C" void initRelationR(int32_t* basePtr,int32_t* alignedPtr, int64_t offs
         alignedPtr[i] = (int32_t)(rand() % (upperRange - lowerRange + 1) + lowerRange);
         // alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
     }
+
+    // alignedPtr[0]=3;
+    // alignedPtr[1]=8;
+    // alignedPtr[2]=3;
+    // alignedPtr[3]=7;
+    // alignedPtr[4]=8;
+    // alignedPtr[5]=7;
+    // alignedPtr[6]=1;
+    // alignedPtr[7]=7;
+    // alignedPtr[8]=9;
+    // alignedPtr[9]=2;
+    // alignedPtr[10]=10;
 }
 
 // Initialize random values to the memref according to random_device
@@ -83,6 +95,19 @@ extern "C" void initRelationS(int32_t* basePtr,int32_t* alignedPtr, int64_t offs
         alignedPtr[i] = (int32_t)(rand() % (upperRange - lowerRange + 1) + lowerRange);
         // alignedPtr[i] = (int32_t)(generateRandomNumber(lowerRange, upperRange));
     }
+
+    // alignedPtr[0]=1;
+    // alignedPtr[1]=8;
+    // alignedPtr[2]=8;
+    // alignedPtr[3]=9;
+    // alignedPtr[4]=10;
+    // alignedPtr[5]=6;
+    // alignedPtr[6]=9;
+    // alignedPtr[7]=8;
+    // alignedPtr[8]=7;
+    // alignedPtr[9]=2;
+    // alignedPtr[10]=5;
+
 }
 
 
