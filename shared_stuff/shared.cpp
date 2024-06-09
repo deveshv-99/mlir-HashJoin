@@ -11,7 +11,7 @@ std::chrono::high_resolution_clock::time_point start;
 
 // For range of values in the key columns of the relation
 int32_t lowerRange = 1;
-int32_t upperRange = 1'000'000'000;
+int32_t upperRange = 100'000;
 
 
 // Start the timer

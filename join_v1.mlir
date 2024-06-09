@@ -2,10 +2,10 @@
 // /Data/devesh/llvm-project/mlir/test/Integration/GPU/CUDA/nested-loop.mlir
 
 module attributes {gpu.container_module} {
-    memref.global constant @buildRelationRows : memref<1xindex> = dense<[100000000]>
-    memref.global constant @probeRelationRows : memref<1xindex> = dense<[100000000]>
+    memref.global constant @buildRelationRows : memref<1xindex> = dense<[10000000]>
+    memref.global constant @probeRelationRows : memref<1xindex> = dense<[10000000]>
 
-    memref.global constant @hashTableSize : memref<1xindex> = dense<[1000000]>
+    memref.global constant @hashTableSize : memref<1xindex> = dense<[100000]>
 
     memref.global constant @numberOfThreadsPerBlock : memref<1xindex> = dense<[256]>
 
