@@ -17,11 +17,6 @@
 - Look for crystal, heavyDB, HCHJ, Garuda timings
 
 
-## Assumptions
-
-- Data is in column-oriented format
-
-
 ## Things left out:
 
 - Comparing entire query instead of just Join
@@ -35,7 +30,3 @@
 - Non-materialized Tables
 - Merge-sort join
 - Comparing on AMD vs NVIDIA GPUs
-
-## Notes:
-
-- For TPC-H dataset, the difference between sizes of two tables is very large. So partitioning wont be that useful
